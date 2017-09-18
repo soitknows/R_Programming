@@ -50,9 +50,10 @@ ggplot(res,aes(Date)) + geom_density()
 ggplot(res,aes(Date)) + 
     geom_freqpoly(color="blue") 
 
-    
-
 close(myconn)
 
 
-
+library(plotly)
+p <- ggplot(data, aes(Month, fill=Reg.Product)) +
+    stat_count() 
+ggplotly(p)
