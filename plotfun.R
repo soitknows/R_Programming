@@ -49,11 +49,22 @@ ggplot(res,aes(Date)) + geom_density()
 
 ggplot(res,aes(Date)) + 
     geom_freqpoly(color="blue") 
-
 close(myconn)
 
 
+
 library(plotly)
-p <- ggplot(data, aes(Month, fill=Reg.Product)) +
-    stat_count() 
+library(dplyr)
+data <- read.csv("case_closures.csv")
+data <- read.csv("case_closures_YTD.csv")
+data$Resolved.Date <- as.Date(data$Resolved.On,"%m/%d/%Y")
+data$Resolved.Month <- factor(months(data$Resolved.Date))
+ndata <- group_by(data,Resolved.Month,Reg.Product) %>% summarize( count = n())
+
+ggplot(ndata) +
+    geom_bar(aes(x=Resolved.Month,y=count, fill=(Resolved.Month)),stat="identity") +
+    facet_wrap(~Reg.Product)
+
+p <-ggplot(data) +
+    geom_bar(aes(x=Resolved.Month, fill=(Reg.Product))) 
 ggplotly(p)
