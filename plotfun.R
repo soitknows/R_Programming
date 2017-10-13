@@ -26,6 +26,7 @@ ggplot(data,aes(Date, group=1)) +
     geom_line(aes(y = sulfate))
     
 
+<<<<<<< HEAD
 
 
 library(RODBC)
@@ -41,6 +42,8 @@ ggplot(x,aes(wf_model_id,icount,fill=as.factor(icount))) +
     geom_bar(stat="identity")
 
 
+=======
+>>>>>>> 1fd5aee6d510374b27f9c6c17bd4cce32b22d492
 res <- sqlQuery(con, "SELECT wf_creator,wf_start
                 FROM crosby_finance.dbo.wf_instance
                 WHERE wf_model_id = 'ANDY_AP'")
@@ -68,3 +71,18 @@ ggplot(ndata) +
 p <-ggplot(data) +
     geom_bar(aes(x=Resolved.Month, fill=(Reg.Product))) 
 ggplotly(p)
+<<<<<<< HEAD
+=======
+
+
+
+
+p <- ggplot(d, aes(x=class,fill=product)) +
+    geom_bar() +
+    facet_wrap(~facet, ncol=3)
+ggplotly(p)
+
+
+    
+
+>>>>>>> 1fd5aee6d510374b27f9c6c17bd4cce32b22d492
