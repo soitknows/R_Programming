@@ -1,7 +1,7 @@
 # R Programming - Johns Hopkins University
 # Programming Assignment 3 - Hospital Quality
 # Author: Andrew Tarver
-
+# Style Guide: https://google.github.io/styleguide/Rguide.xml
 
 # Load up source data and prepare for function use.
 input_file <- "data/outcome-of-care-measures.csv"
