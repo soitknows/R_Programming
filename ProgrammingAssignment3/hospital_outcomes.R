@@ -1,12 +1,22 @@
+# hospital_ouctomes.R
+#
+# Copyright (C) 2017 Andrew Tarver
+# Author: Andrew Tarver (http://github.com/soitknows)
+# Style Guide: https://google.github.io/styleguide/Rguide.xml
+#
 # R Programming - Johns Hopkins University
 # Programming Assignment 3 - Hospital Quality
-# Author: Andrew Tarver
-# Style Guide: https://google.github.io/styleguide/Rguide.xml
+#
+# Description: Reads in data from the "Outcomes of Care Measures" table in the 
+#     "Hospital Compare" database (data.medicare.gov.) and provides functions
+#     for calcuating the 30-day mortality rates in various states for various
+#     health conditions.
+
 
 # Load up source data and prepare for function use.
 input_file <- "data/outcome-of-care-measures.csv"
 data <- read.csv(input_file, na.strings="Not Available")
-data <- data[,c(2, 7, 11, 17, 23)]  # these indexes are for columns below.
+data <- data[, c(2, 7, 11, 17, 23)]  # these indexes are for columns below.
 # Rename columns for easier sub-setting and error checking.
 cols <- c("Hospital.Name", "State", "heart attack", "heart failure", "pneumonia")
 colnames(data) <- cols
@@ -26,10 +36,14 @@ GetHosps <- function (state = "AL", outcome = "heart attack") {
   # Returns:
   #   Data frame of 30-day mortality rates for hospitals in the state specified.
   
-  if ( !state %in% states) stop("invalid state")
-  if ( !outcome %in% cols) stop("invalid outcome")
+  if ( !state %in% states) {
+    stop("invalid state")
+  }
+  if ( !outcome %in% cols) {
+    stop("invalid outcome")
+  }
   hospitals <- data[data$State == state & !is.na(data[outcome]),
-       c(outcome,"Hospital.Name")]
+       c(outcome, "Hospital.Name")]
   hospitals[outcome] <- sapply(hospitals[outcome], as.numeric)
   hospitals
 }
@@ -69,8 +83,12 @@ RankHospital <- function (state = "AL", outcome = "heart attack", num = "best") 
   hospitals <- GetHosps(state, outcome)
   hospitals <- hospitals[order(hospitals[outcome],hospitals$Hospital.Name),]
   num_results <- dim(hospitals)[1]
-  if (num == "best") { num <- 1 }
-  if (num == "worst") { num <- num_results}
+  if (num == "best") { 
+    num <- 1 
+  }
+  if (num == "worst") { 
+    num <- num_results
+  }
   ifelse (num > num_results, NA, as.vector(hospitals[num,"Hospital.Name"])) 
 }
 
@@ -86,9 +104,9 @@ RankAll <- function (outcome = "heart attack", num = "best") {
   #   A data frame containing the ranking hospital in each sate for the rank 
   #   and clinical condition specified.
   
-  ranks <- data.frame(hospital=rep(NA,54),state=states,row.names = states)
+  ranks <- data.frame(hospital = rep(NA,54), state = states, row.names = states)
   for (state in states) {
-    ranks[state,"hospital"] <-RankHospital(state=state,outcome=outcome,num=num)
+    ranks[state, "hospital"] <-RankHospital(state=state, outcome=outcome, num=num)
   }
   ranks
 }
