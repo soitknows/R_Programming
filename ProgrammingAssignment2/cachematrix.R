@@ -8,6 +8,11 @@
 # Programming Assignment 2 - Lexical Scoping.
 #
 # Description:
+#   The functions below allow a user to specify a numeric matrix, and 
+#   then calculate the inverse of that matrix. Since inverting a matrix 
+#   can be a resource intensive process, repeat calculations are avoided
+#   by leveraging lexical scoping to cache the matrix inverse in a MakeCacheMatrix 
+#   object once once it is calculated.
 #
 # Example:
 #
@@ -28,13 +33,15 @@
 
 
 MakeCacheMatrix <- function(mx = matrix()) {
-  # Creates a special cached object for use in the CacheSolve function.
+  # Takes a numeric matrix and returns an object that can be used to calculate 
+  # the inverse of that matrix. Once calcualted by the CacheSolve function, the 
+  # inverse matrix will be cached in the mx object of the MakeCacheMatrix function environment.
   #
   # Args:
-  #   mx: a maxtrix of variable dimensions, but than can be inverted.
+  #   mx: a numeric maxtrix of variable dimensions, but than can be inverted.
   #
   # Returns:
-  #
+  #   A special object for use in the CacheSolve function to cache matrix inverses.
   
   inverse <- NULL
   set <- function(setter) {
@@ -52,13 +59,16 @@ MakeCacheMatrix <- function(mx = matrix()) {
 
 
 CacheSolve <- function(cached, ...) {
-  #
+  # Takes a MakeCacheMatrix object and calculates the inverse of the matrix 
+  # specified in the MakeCacheMatrix object using the solve() function. If the 
+  # inverse has has already been calculated (e.g. MakeCacheMatrix cache is not null ) 
+  # then the cached value will be returned instead. 
   #
   # Args:
-  #   cached:
+  #   cached: a MakeCacheMatrix object
   #
   # Returns:
-  #
+  #   The inverse matrix of the matrix spefcified in the MakeCacheMatrix object.
   
   inverse <- cached$get.inverse()
   if(!is.null(inverse)) {
